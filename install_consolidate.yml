@@ -1,0 +1,23 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: intstall apache2 and tmux package for Ubuntu
+    apt:
+      name:  
+        - apache2
+        - tmux
+      state: latest
+    when: ansible_distribution == "Ubuntu" # so when machine is Ubuntu (OS) then only this command will run on Ubuntu and not on any other distributions
+   
+  - name: intstall apache2 & tmux package for CentOs
+    dnf:
+      name: 
+        - apache2
+        - tmux
+      state: latest
+    when: ansible_distribution == "CentOs" 
+  
+  

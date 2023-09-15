@@ -1,0 +1,38 @@
+---
+ 
+ - hosts: all
+   become: true
+   tasks: # here we are updating all the systems before any new operations are to be performed
+
+   - name: install updates (CentOS)
+     dnf:
+       update_only: yes
+       update_cache: yes
+     when: ansible_distribution == "CentOS"
+ 
+   - name: install updates (Ubuntu)
+     apt:
+       upgrade: dist
+       update_cache: yes
+     when: ansible_distribution == "Ubuntu"
+ 
+  # here we are targeting specific servers mentioned in the invernoty file grouping
+ - hosts: web_servers
+   become: true
+   tasks:
+ 
+   - name: install apache and php for Ubuntu servers
+     apt:
+       name:
+         - apache2
+         - libapache2-mod-php
+       state: latest
+     when: ansible_distribution == "Ubuntu"
+ 
+   - name: install apache and php for CentOS servers
+     dnf:
+       name:
+         - httpd
+         - php
+       state: latest
+     when: ansible_distribution == "CentOS"

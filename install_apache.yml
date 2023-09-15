@@ -7,9 +7,23 @@
   - name: intstall apache2 package
     apt:
       name: apache2
-      state: latest 
+      state: latest
+    when: ansible_distribution == "Ubuntu" # so when machine is Ubuntu (OS) then only this command will run on Ubuntu and not on any other distributions
   
   - name: install tmux package
     apt:
       name: tmux
       state: latest
+    when: ansible_distribution == "Ubuntu" 
+
+  - name: intstall apache2 package
+    dnf:
+      name: apache2
+      state: latest
+    when: ansible_distribution == "CentOs" 
+  
+  - name: install tmux package
+    dnf:
+      name: tmux
+      state: latest
+    when: ansible_distribution == "CentOs" 

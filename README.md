@@ -58,5 +58,8 @@ ansible all -m apt -a upgrade=dist --become --ask-become-pass
  ansible-playbook --ask-become-pass install_apache.yml
 ```
 
-
+## :open_book: Targeting specific Nodes
+- Lets say you 3 servers one for front end, second one contains some business logic as in REST API, and last one is a DB server
+- So, we would have to target specific servers for specific configurations
+- Need to create groups in inventory file eg one for db_servers, file_servers, web_servers 
 
