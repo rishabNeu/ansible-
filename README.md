@@ -7,6 +7,10 @@
 - Install ssh key pair -> `public and private`
 - Keep the __private__ on the workstation that the Ansible will use to ssh to other servers
 - `Dump/ copy` the **public key** to all the other servers to which the main ansible machine is going to talk to.
+```bash
+# comand to copy ssh public key from the main workstation to the server in order for the main server to talk to the target server
+ssh-copy-id -i ~/.ssh/ansible.pub 172.0.0.23 
+```
 
 ## 💾 Inventory file
 - Add all the `IP` or `Hostnames` of the server you want ansible to connect to and work with
@@ -114,7 +118,7 @@ ansible all -m apt -a upgrade=dist --become --ask-become-pass
          - php
        state: latest
      when: ansible_distribution == "CentOS"
-     
+
 ```
 
 ## :safety_pin: Tags
@@ -131,5 +135,52 @@ ansible-playbook --tags db --ask-become-pass site_with_tags.yml
 ansible-playbook --tags centos --ask-become-pass site_with_tags.yml
 ansible-playbook --tags apache --ask-become-pass site_with_tags.yml
 ```
+
+## :open_file_folder: File Management & downloading Binaries
+- You can copy files from Local System to all the other servers 
+- Also, if we want we can download binaries like Terraform, Unzip, etc on a workstation locally or other servers.
+  
+```shell
+
+# Exmaple of copying file from local to all the web servers 
+- hosts: web_servers
+   become: true
+   tasks:   
+    - name: copy html file for site
+        tags: apache,apache,apache2,httpd
+        copy:
+        src: default_site.html
+        dest: /var/www/html/index.html
+        owner: root
+        group: root
+        mode: 0644
+
+# Exmaple of downloading binaries in local workstation
+- hosts: workstations
+   become: true
+   tasks:
+
+   - name: install unzip
+     package:
+       name: unzip
+ 
+   - name: install terraform
+     unarchive:
+      src: https://releases.hashicorp.com/terraform/0.12.28/terraform_0.12.28_linux_amd64.zip # download link address
+      dest: /usr/local/bin # here the binary will be downloaded
+      remote_src: yes # to tell it is downloaded
+      mode: 0755
+      owner: root
+      group: root
+
+
+# Run the playbook 
+ansible-playbook --ask-become-pass file_management.yml
+
+```
+
+## :: Services
+
+
 
 

@@ -28,6 +28,16 @@
          - libapache2-mod-php
        state: latest
      when: ansible_distribution == "Ubuntu"
+  
+  # This task will copy the html file to all the web servers 
+   - name: copy html file for site
+     tags: apache,apache,apache2,httpd
+      copy:
+       src: site.html  # name of the file
+       dest: /var/www/html/index.html # location of the directories where file is to be copied 
+       owner: root 
+       group: root
+       mode: 0644 # permission
  
    - name: install apache and php for CentOS servers
      dnf:
