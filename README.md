@@ -10,5 +10,25 @@
 
 ## 💾 Inventory file
 - Add all the `IP` or `Hostnames` of the server you want ansible to connect to and work with
-- 
+
+## ⏱️ Connection check
+- Inorder to check the connection to all the servers from the main where ansible is installed 
+
+```bash
+# this will create a connection and check if everything is fine and we are able to connect
+# here the path till ssh private is given and the key name is ansible (private key) & invenory contains all the server ips to which using this key the ansible main machine going to connect.
+ansible all --key-file ~/.ssh/ansible -i inventory - ping
+
+# To list all the hosts
+ansible all --list-hosts
+
+# Lists all the data of all the servers
+# m is the module flag
+ansible all -m gather_facts
+
+# Lists all the data of a specific server
+ansible all -m gather_facts --limit 172.0.0.12
+```
+
+
 
