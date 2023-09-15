@@ -62,6 +62,61 @@ ansible all -m apt -a upgrade=dist --become --ask-become-pass
 - So, we would have to target specific servers for specific configurations
 - Need to create groups in inventory file eg one for db_servers, file_servers, web_servers
 
+```shell
+# inventory_group file 
+[web_servers]
+172.16.250.132
+172.16.250.248
+ 
+[db_servers]
+172.16.250.133
+
+[file_servers]
+172.16.250.134
+
+
+# changes in the yml file 
+---
+ 
+ - hosts: all
+   become: true
+   tasks: # here we are updating all the systems before any new operations are to be performed
+
+   - name: install updates (CentOS)
+     dnf:
+       update_only: yes
+       update_cache: yes
+     when: ansible_distribution == "CentOS"
+ 
+   - name: install updates (Ubuntu)
+     apt:
+       upgrade: dist
+       update_cache: yes
+     when: ansible_distribution == "Ubuntu"
+ 
+  # here we are targeting specific servers mentioned in the invernoty file grouping
+ - hosts: web_servers
+   become: true
+   tasks:
+ 
+   - name: install apache and php for Ubuntu servers
+     apt:
+       name:
+         - apache2
+         - libapache2-mod-php
+       state: latest
+     when: ansible_distribution == "Ubuntu"
+ 
+   - name: install apache and php for CentOS servers
+     dnf:
+       name:
+         - httpd
+         - php
+       state: latest
+     when: ansible_distribution == "CentOS"
+     
+```
+
 ## :safety_pin: Tags
 - Used to run `SPECIFIC TASK` in the playbook instead of running all the tasks for testing just one change in one task
 - So, we dont need to run all the tasks just for one change in other task
