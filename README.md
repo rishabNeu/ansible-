@@ -22,13 +22,29 @@ ansible all --key-file ~/.ssh/ansible -i inventory - ping
 # To list all the hosts
 ansible all --list-hosts
 
-# Lists all the data of all the servers
+# Lists all the data/information of all the servers
 # m is the module flag
 ansible all -m gather_facts
 
 # Lists all the data of a specific server
 ansible all -m gather_facts --limit 172.0.0.12
+
+
 ```
 
+## ⌨️ AdHoc Commands 
+```bash
+#Tell ansible to use sudo (become)
+ansible all -m apt -a update_cache=true --become --ask-become-pass
 
+#Install a package named tmux via the apt module
+# Equivalent to sudo apt-get install tmux 
+ansible all -m apt -a name=tmux --become --ask-become-pass
+
+#Install a package via the apt module, and also make sure it’s the latest version available
+ansible all -m apt -a "name=snapd state=latest" --become --ask-become-pass
+
+#Upgrade all the package updates that are available
+ansible all -m apt -a upgrade=dist --become --ask-become-pass
+```
 
