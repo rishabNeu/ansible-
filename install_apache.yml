@@ -1,0 +1,15 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: intstall apache2 package
+    apt:
+      name: apache2
+      state: latest 
+  
+  - name: install tmux package
+    apt:
+      name: tmux
+      state: latest

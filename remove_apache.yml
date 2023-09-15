@@ -1,0 +1,16 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: install apache2 package
+    apt:
+      name: apache2
+      state: absent #this will remove the apache2 package from all the servers
+  
+  - name: install tmux package
+    apt:
+      name: tmux
+      state: absent #this will remove the tmux package from all the servers
+     

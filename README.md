@@ -33,6 +33,8 @@ ansible all -m gather_facts --limit 172.0.0.12
 ```
 
 ## ⌨️ AdHoc Commands 
+- Some commands which require sudo previliges to work with.
+- The sudo thing can be achieved using the below syntax.
 ```bash
 #Tell ansible to use sudo (become)
 ansible all -m apt -a update_cache=true --become --ask-become-pass
@@ -47,4 +49,14 @@ ansible all -m apt -a "name=snapd state=latest" --become --ask-become-pass
 #Upgrade all the package updates that are available
 ansible all -m apt -a upgrade=dist --become --ask-become-pass
 ```
+
+## :open_book: Playbooks 
+- Before Ansible runs any playbooks or before running any commands on servers it will `First Gather Facts` and do the further things.
+-  
+```bash
+# Run the playbook
+ ansible-playbook --ask-become-pass install_apache.yml
+```
+
+
 
