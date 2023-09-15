@@ -5,12 +5,14 @@
    pre_tasks: # this means these are the tasks which would run first no matter what
  
    - name: install updates (CentOS)
+     tags: always
      dnf:
        update_only: yes
        update_cache: yes
      when: ansible_distribution == "CentOS"
  
    - name: install updates (Ubuntu)
+     tags: always
      apt:
        upgrade: dist
        update_cache: yes
@@ -22,6 +24,7 @@
    tasks:
  
    - name: install httpd package (CentOS)
+     tags: apache,centos,httpd
      dnf:
        name:
          - httpd
@@ -30,6 +33,7 @@
      when: ansible_distribution == "CentOS"
  
    - name: install apache2 package (Ubuntu)
+     tags: apache,apache2,ubuntu
      apt:
        name:
          - apache2

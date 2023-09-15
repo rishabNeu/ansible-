@@ -51,8 +51,7 @@ ansible all -m apt -a upgrade=dist --become --ask-become-pass
 ```
 
 ## :open_book: Playbooks 
-- Before Ansible runs any playbooks or before running any commands on servers it will `First Gather Facts` and do the further things.
--  
+- Before Ansible runs any playbooks or before running any commands on servers it will `First Gather Facts` and do the further things. 
 ```bash
 # Run the playbook
  ansible-playbook --ask-become-pass install_apache.yml
@@ -61,5 +60,21 @@ ansible all -m apt -a upgrade=dist --become --ask-become-pass
 ## :open_book: Targeting specific Nodes
 - Lets say you 3 servers one for front end, second one contains some business logic as in REST API, and last one is a DB server
 - So, we would have to target specific servers for specific configurations
-- Need to create groups in inventory file eg one for db_servers, file_servers, web_servers 
+- Need to create groups in inventory file eg one for db_servers, file_servers, web_servers
+
+## :safety_pin: Tags
+- Used to run `SPECIFIC TASK` in the playbook instead of running all the tasks for testing just one change in one task
+- So, we dont need to run all the tasks just for one change in other task
+- We `Tag` all the tasks and then based on that tag we can run that particular task and skip all the other tasks 
+  
+```bash
+# List the available tags in a playbook
+ansible-playbook --list-tags site_with_tags.yml
+
+# Examples of running a playbook but targeting specific tags
+ansible-playbook --tags db --ask-become-pass site_with_tags.yml
+ansible-playbook --tags centos --ask-become-pass site_with_tags.yml
+ansible-playbook --tags apache --ask-become-pass site_with_tags.yml
+```
+
 
