@@ -179,7 +179,41 @@ ansible-playbook --ask-become-pass file_management.yml
 
 ```
 
-## :: Services
+## :magic_wand: Services
+- It is a module that can be used to start, stop, restart, or reload services on remote hosts. This is useful for managing the state of services, especially when deploying updates or changes.
+
+```bash
+
+# changes related to start httpd automatically and also enabling it if in case the server goes down to restart httpd automatically
+- name: start and enable httpd (CentOS)
+     tags: apache,centos,httpd
+     service:
+       name: httpd
+       state: started
+       enabled: yes
+     when: ansible_distribution == "CentOS"
+
+
+# If the configuration file is changed and needs a restart so this is how it can be done 
+- name: change e-mail address for admin
+     tags: apache,centos,httpd
+     lineinfile: #module to be used to change a line 
+       path: /etc/httpd/conf/httpd.conf # path to the file which is to be changed 
+       regexp: '^ServerAdmin' # line begin with ServerAdmin
+       line: ServerAdmin somebody@somewhere.net #replace that with this line 
+     when: ansible_distribution == "CentOS"
+     register: httpd # variable declare that stores the state of httpd whether its changed or not
+ 
+- name: restart httpd (CentOS)
+     tags: apache,centos,httpd
+     service:
+       name: httpd
+       state: restarted 
+     when: httpd.changed  # this play check if changed then run this which will restart the server 
+
+```
+
+
 
 
 
