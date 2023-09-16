@@ -14,6 +14,9 @@ ssh-copy-id -i ~/.ssh/ansible.pub 172.0.0.23
 
 ## 💾 Inventory file
 - Add all the `IP` or `Hostnames` of the server you want ansible to connect to and work with
+- Dynamic Inventory is also supported in Ansible
+- For Dynamic just get the server info from the cloud provider.
+  
 
 ## ⏱️ Connection check
 - Inorder to check the connection to all the servers from the main where ansible is installed 
@@ -56,6 +59,9 @@ ansible all -m apt -a upgrade=dist --become --ask-become-pass
 
 ## :open_book: Playbooks 
 - Before Ansible runs any playbooks or before running any commands on servers it will `First Gather Facts` and do the further things. 
+- To disable fact gathering for a play, set the gather_facts key to no
+- Write roles its like modules in Terraform 
+
 ```bash
 # Run the playbook
  ansible-playbook --ask-become-pass install_apache.yml
@@ -125,6 +131,7 @@ ansible all -m apt -a upgrade=dist --become --ask-become-pass
 - Used to run `SPECIFIC TASK` in the playbook instead of running all the tasks for testing just one change in one task
 - So, we dont need to run all the tasks just for one change in other task
 - We `Tag` all the tasks and then based on that tag we can run that particular task and skip all the other tasks 
+  
   
 ```bash
 # List the available tags in a playbook
@@ -212,6 +219,26 @@ ansible-playbook --ask-become-pass file_management.yml
      when: httpd.changed  # this play check if changed then run this which will restart the server 
 
 ```
+
+## Variables
+- Registered Variables -> One can capture the output of a command by using the register statement.
+- The output is saved into a variable that could be used later for either debugging purposes or in order to achieve something else, such as a particular configuration based on a command's output.
+ 
+## :: Task Iteration with Loops
+- Need to look into it.
+
+## :genie_man: Ansible Handlers
+- They are executed only once.
+- Executed at the very end.
+
+## :ninja: Anisble Roles
+- Create Roles basically an Ansible PlayBook only
+- Add all the plays(tasks) in that particular role
+- Eg You can add some Bootstrapping scripts as Plays like an apt-get update 
+- These types of roles can be used to set up a server which has nothing on it.
+- So, this can actually download all the latest packages required by the system.
+
+
 
 
 
